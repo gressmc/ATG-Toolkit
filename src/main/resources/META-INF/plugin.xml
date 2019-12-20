@@ -143,10 +143,13 @@
 
         <fileBasedIndex implementation="org.idea.plugin.atg.index.AtgComponentsIndexExtension"/>
         <fileBasedIndex implementation="org.idea.plugin.atg.index.AtgXmlsIndexExtension"/>
+        <fileBasedIndex implementation="org.idea.plugin.atg.index.XmlActorIndexExtension"/>
 
         <facetType implementation="org.idea.plugin.atg.module.AtgModuleFacetType"/>
         <framework.detector implementation="org.idea.plugin.atg.framework.AtgFrameworkDetector"/>
         <iconProvider implementation="org.idea.plugin.atg.module.AtgIconProvider" id="atgFolders" order="first"/>
+
+        <implicitUsageProvider implementation="org.idea.plugin.atg.usage.implicit.ActorImplicitUsageProvider"/>
 
     </extensions>
 
