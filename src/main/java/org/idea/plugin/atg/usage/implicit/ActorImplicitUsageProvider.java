@@ -23,6 +23,9 @@ import java.util.stream.Collectors;
 
 public class ActorImplicitUsageProvider implements ImplicitUsageProvider {
 
+    // FIXME: 12/23/2019 I'd say, you have explicit invocations of particular methods from actor templates, but not implicit.
+    //  There are extensions for "Find Usages" which will also shows invocation on click on element
+
     private static final String PROPERTY_CLASS = "$class";
     private static final String XML_TAG_COMPONENT = "component";
     private static final String XML_TAG_FORM = "form";
@@ -50,6 +53,14 @@ public class ActorImplicitUsageProvider implements ImplicitUsageProvider {
             PsiMethod inspectMethod = (PsiMethod) element;
             Project project = inspectMethod.getProject();
             Collection<String> xmlFileName = FileBasedIndex.getInstance().getAllKeys(XmlActorIndexExtension.NAME, project);
+
+            // FIXME: 12/23/2019 Indexes allow to iterate over all entries.
+            //  here you iterates them twice, once - collect all keys, and later - get all values.
+            //  But actually you should use FileBasedIndex.getInstance().getContainingFiles(..) for these actions
+            //  Have a look on example org.idea.plugin.atg.index.AtgIndexService#getComponentsByName
+            //  indexes allow .processAllKeys
+            //  provided code does iteration over all entries twice
+
             List<String> pathToFiles = xmlFileName.stream()
                     .flatMap(nameOfFile -> FileBasedIndex.getInstance()
                             .getValues(XmlActorIndexExtension.NAME, nameOfFile, GlobalSearchScope.allScope(project)).stream())
@@ -57,6 +68,7 @@ public class ActorImplicitUsageProvider implements ImplicitUsageProvider {
             Set<String> componentNames;
             if (((PsiMethod) element).getName().startsWith(PREFIX_HANDLE)) {
                 componentNames = findComponentNameWithXmlTag(pathToFiles, XML_TAG_FORM, project, inspectMethod);
+                // FIXME: 12/23/2019 Totally not understandable names for most of private methods in this class
             } else {
                 componentNames = findComponentNameWithXmlTag(pathToFiles, XML_TAG_COMPONENT, project, inspectMethod);
             }

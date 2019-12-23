@@ -8,6 +8,10 @@ import java.util.List;
 
 public class XmlPsiRecursiveElementVisitor extends PsiRecursiveElementVisitor {
 
+    // FIXME: 12/23/2019 It's totally unclear what this PsiRecursiveVisitor does,
+    //  if just checks whether paricular XmlTag is present in file
+    //  pr collect all xmlTags with name - it should have appropriate naming
+
     private final String xmlTag;
     private final List<PsiElement> psiElements;
 
